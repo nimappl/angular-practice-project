@@ -7,13 +7,16 @@
   <div class="col-12">
     <ul *ngFor="let recipe of recipes" class="list-group">
       <a href="#" style="text-decoration: none">
-      <li class="list-group-item d-flex p-3">
+      <li class="list-group-item d-flex p-3 btn-light">
           <div class="w-75">
             <h4 class="text-dark">{{ recipe.name }}</h4>
             <p class="text-secondary m-0">{{ recipe.description }}</p>
           </div>
           <div class="w-25">
-            <img class="img-fluid" src="{{ recipe.imagePath }}" alt="">
+            <img
+            class="img-fluid"
+            [src]="recipe.imagePath"
+            alt="{{ recipe.name }}">
           </div>
         </li>
       </a>
