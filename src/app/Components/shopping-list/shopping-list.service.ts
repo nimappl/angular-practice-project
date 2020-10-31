@@ -17,4 +17,24 @@ export class ShoppingListService {
     this.ingredients.push({name, amount});
     this.ingredientsChanged.emit(this.ingredients.slice());
   }
+
+  addIngredients(ingredients: Ingredient[]): void {
+    // this.ingredients.push(...ingredients);
+
+    // add smart
+    for (const iToAdd of ingredients) {
+      let notInList = true;
+      for (const iInList of this.ingredients) {
+        if (iToAdd.name === iInList.name) {
+          iInList.amount += iToAdd.amount;
+          notInList = false;
+          break;
+        }
+      }
+      if (notInList)
+        this.ingredients.push(iToAdd);
+    }
+
+    this.ingredientsChanged.emit(this.ingredients.slice());
+  }
 }
