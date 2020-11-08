@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import {RouterModule, Routes} from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
@@ -11,6 +12,18 @@ import { RecipeDetailComponent } from './Components/recipes/recipe-detail/recipe
 import { ShoppingEditComponent } from './Components/shopping-list/shopping-edit/shopping-edit.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { ShoppingListService } from './Components/shopping-list/shopping-list.service';
+import { RecipeEditComponent } from './Components/recipes/recipe-edit/recipe-edit.component';
+
+const appRoutes: Routes = [
+  {path: '', redirectTo: '/recipes', pathMatch: 'full'},
+  {path: 'recipes', component: RecipesComponent, children: [
+      {path: 'new', component: RecipeEditComponent},
+      {path: ':id', component: RecipeDetailComponent},
+      {path: ':id/edit', component: RecipeEditComponent},
+    ]},
+  {path: 'shopping-list', component: ShoppingListComponent}
+];
+
 
 @NgModule({
   declarations: [
@@ -22,10 +35,12 @@ import { ShoppingListService } from './Components/shopping-list/shopping-list.se
     RecipesComponent,
     RecipeDetailComponent,
     ShoppingEditComponent,
-    DropdownDirective
+    DropdownDirective,
+    RecipeEditComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [ShoppingListService],
   bootstrap: [AppComponent]
