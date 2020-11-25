@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './Components/header/header.component';
@@ -14,16 +15,29 @@ import { ShoppingEditComponent } from './Components/shopping-list/shopping-edit/
 import { DropdownDirective } from './shared/dropdown.directive';
 import { ShoppingListService } from './Components/shopping-list/shopping-list.service';
 import { RecipeService } from './Components/recipes/recipe.service';
+import { RecipesResolverService } from './Components/recipes/recipes-resolver.service';
 import { RecipeEditComponent } from './Components/recipes/recipe-edit/recipe-edit.component';
 
 const appRoutes: Routes = [
-  {path: '', redirectTo: '/recipes', pathMatch: 'full'},
-  {path: 'recipes', component: RecipesComponent, children: [
-      {path: 'new', component: RecipeEditComponent},
-      {path: ':id', component: RecipeDetailComponent},
-      {path: ':id/edit', component: RecipeEditComponent},
-    ]},
-  {path: 'shopping-list', component: ShoppingListComponent}
+  { path: '', redirectTo: '/recipes', pathMatch: 'full' },
+  {
+    path: 'recipes',
+    component: RecipesComponent,
+    children: [
+      { path: 'new', component: RecipeEditComponent },
+      {
+        path: ':id',
+        component: RecipeDetailComponent,
+        resolve: [RecipesResolverService]
+      },
+      {
+        path: ':id/edit',
+        component: RecipeEditComponent,
+        resolve: [RecipesResolverService]
+      },
+    ]
+  },
+  { path: 'shopping-list', component: ShoppingListComponent }
 ];
 
 
@@ -44,7 +58,8 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes),
   ],
   providers: [
     ShoppingListService,
